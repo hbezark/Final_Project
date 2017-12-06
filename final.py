@@ -7,6 +7,8 @@ import sqlite3
 import datetime
 from yelp.client import Client
 from yelp.oauth1_authenticator import Oauth1Authenticator
+from os import path
+from wordcloud import wordCloud, STOPWORDS
 
 #Caching pattern
 CACHE_FNAME = "206final_project.json" 
@@ -98,6 +100,18 @@ conn.commit()
 cur.close()
 
 #New York Times Word Cloud
+d = path.dirname(__file__)
+text = (' ').join(trump_New_York_Times_info)
+trump_mask = np.array(Image.open(path.join(d, "trump_pic.png")))
+image_colors = ImageColorGenerator(trump_mask)
+stopwords = set(STOPWORDS)
+stopwords.add("")
+stopwords.add("")
+cloud = WordCloud(mask = trump_mask, stopwords = stopwords).generate(text)
+plt.imshow(cloud.recolor(color_func=image_colors), interpolation = 'bilinear')
+plt.axis('off')
+plt.figure()
+cloud.to_file(path.join(d, 'trump.png'))
 
 #Yelp Plotly
 
