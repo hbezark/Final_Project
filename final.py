@@ -31,7 +31,7 @@ def newyorktimes_data(search_term):
 		page = 0 #The value of page corresponds to a set of 10 results. Page = 0 corresponds to records 0-9
 		while page != 10: #Page = 10 corresponds to records 100-109 in order to get to the 100 interactions (There is no way to get exactly 100 interactions, it is either going to be 99 or 109)
 			New_York_Times_baseurl = "https://api.nytimes.com/svc/search/v2/articlesearch.json"
-			New_York_Times_request = requests.get(New_York_Times_baseurl, params = {'q': search_term, 'fl': 'web_url, headline, keywords, pub_date, byline, word_count', 'page': page, 'api-key': '9bbd4dcfe7c14c08badb0a3d571abc42'}
+			New_York_Times_request = requests.get(New_York_Times_baseurl, params = {'q': search_term, 'fl': 'web_url, headline, keywords, pub_date, byline, word_count', 'page': page, 'api-key': '9bbd4dcfe7c14c08badb0a3d571abc42'})
 			New_York_Times_data = json.loads(New_York_Times_request.text)
 			for item in New_York_Times_data['response']['docs']:
 				CACHE_DICTION['New_York_Times'][search_term].append(item)
@@ -77,7 +77,7 @@ def yelp_info(search_term2):
 		...
 	return info2
 
-summer_house_santa_monica_reviews = yelp_info('Sumemr House Santa Monica')
+summer_house_santa_monica_reviews = yelp_info('Summer House Santa Monica')
 
 #SQL
 conn = sqlite3.connect('final_project_database.sqlite')
