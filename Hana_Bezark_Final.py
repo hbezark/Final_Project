@@ -13,6 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud, ImageColorGenerator, STOPWORDS
 
+
 #Caching pattern
 CACHE_FNAME = "206final_project.json"  #The name of the cache file is '206final_project.json'
 try: 
@@ -22,6 +23,7 @@ try:
 	cache_file.close()  #Close the file, we're good, we got the data in a dictionary
 except:
 	CACHE_DICTION = {}  
+
 
 #API: New York Times
 def newyorktimes_data(search_term):
@@ -40,9 +42,9 @@ def newyorktimes_data(search_term):
 			for item in New_York_Times_data['response']['docs']:  #Loops through json object and gets data that is nested within response and then docs dictionaries
 				CACHE_DICTION[search_term].append(item)  #Appends dictionaries containing all information to the cache
 			page += 1  #Loops through the pages until the page number is 13 
-	f = open(CACHE_FNAME, 'w')  #Opens the cache file 
-	f.write(json.dumps(CACHE_DICTION))  #Write the new information into the cached file
-	f.close()  #Closes the cache file
+	cache_file1 = open(CACHE_FNAME, 'w')  #Opens the cache file 
+	cache_file1.write(json.dumps(CACHE_DICTION))  #Write the new information into the cached file
+	cache_file1.close()  #Closes the cache file
 	return CACHE_DICTION[search_term]  #Returns a list of dictionaries that contains each article's web url, headline, keywords, news desk, publication date, byline, word count and score
 
 def newyorktimes_info(search_term):
@@ -79,14 +81,17 @@ def newyorktimes_info(search_term):
 	return info  #Return the dictinary
 
 trump_New_York_Times_info = newyorktimes_info('Donald Trump')  #Saves web url, headline, keywords, news desk, publication date, byline and word count for articles that contain the search term Donald Trump in the variable trump_New_York_Times_info 
-#print(trump_New_York_Times_info) #Prints out information detailed above that is saved in the variable trump_New_York_Times_info
 
+print("Here is the json data:\n")
+print(trump_New_York_Times_info) #Prints out information detailed above that is saved in the variable trump_New_York_Times_info
+print("\n")
+
+print("Here are the headlines from articles containing the search term Donald Trump:\n")
 for key in trump_New_York_Times_info:  #For each headline in the dictionary
 	print(key)  #Print the headline
 
-# #SQL
-# import pdb
-# pdb.set_trace()
+
+#SQL
 conn = sqlite3.connect('final_project_database.sqlite')  #SQL database is named final_project_database.sqlite
 cur = conn.cursor()
 
@@ -99,6 +104,7 @@ for key in trump_New_York_Times_info:
 
 conn.commit()  #Commits the information into the table
 cur.close()  #Closes the cursor
+
 
 #New York Times Word Cloud
 d = path.dirname(__file__) #Sets the path of the running script equal to d so that the word coud can later be saved to my working directory
